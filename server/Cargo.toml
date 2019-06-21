@@ -1,0 +1,13 @@
+[package]
+name = "lixchess_server"
+version = "0.1.0"
+authors = ["caelunshun <caelunshun@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+tokio = "0.1.21"
+ring = "0.14.6"
+protobuf = "2.6.2"
+serde = "1.0.92"
+serde_json = "1.0.39"
+toml = "0.5.1"

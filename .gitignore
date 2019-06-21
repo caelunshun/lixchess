@@ -1,3 +1,4 @@
 /target
 **/*.rs.bk
 **/.idea
+core/src/proto/main.rs

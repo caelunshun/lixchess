@@ -6,3 +6,4 @@ extern crate test;
 extern crate derive_new;
 
 pub mod board;
+pub mod proto;

@@ -310,10 +310,7 @@ impl Position {
     }
 
     pub fn offset(&self, offset: (isize, isize)) -> Self {
-        Position(
-            self.0 + offset.0,
-            self.1 + offset.1,
-        )
+        Position(self.0 + offset.0, self.1 + offset.1)
     }
 }
 

@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+// Sent by both sides to derive
+// a secret key for symmetric
+// encryption.
+message Handshake {
+    bytes public_key = 1;
+}
+
+// Sent by the client when after
+// handshaking.
+message Authenticate {
+    bytes session_id = 1;
+}
+
+// Sent by the server after Authenticate
+// is received. If authentication failed,
+// the server will disconnect without sending
+// the Disconnect message after sending this
+// message.
+message AuthenticationResult {
+    bool result = 1; // true for success, false for failure.
+}
+
+// Sent by the client when they wish
+// to create a game. When this happens,
+// the server will automatically create the game,
+// and the client will automatically display the
+// "waiting for players" screen.
+message CreateGame {
+    string name = 1;
+}
+
+// Sent by the client when they wish to join
+// a game. The game ID is the ID of the game
+// sent to the client by the lobby server.
+message JoinGame {
+    uint32 game_id = 1;
+}
+
+// Sent by the server when a player has joined
+// the client's game.
+message PlayerJoined {
+    string player_name = 1;
+}
+
+// Sent by the server when the client's game is starting.
+message StartGame {}
+
+// Sent by the server to switch the current player's
+// turn. This is sent after OpponentMove or MakeMove.
+message CurrentTurn {
+    uint32 player = 1; // 0 for opponent, 1 for client
+}
+
+// Sent by the server when the opponent
+// makes a move. The client should wait
+// for the CurrentTurn message before
+// allowing the user to make a move.
+message OpponentMove {
+    uint32 from_x = 1;
+    uint32 from_y = 2;
+    uint32 to_x = 3;
+    uint32 to_y = 4;
+}
+
+// Sent by the client when the user
+// has made a move. If the move is invalid,
+// the server will disconnect the client;
+// otherwise, a CurrentTurn message
+// will be sent indicating that it
+// is now the opponent's turn.
+message MakeMove {
+    uint32 from_x = 1;
+    uint32 from_y = 2;
+    uint32 to_x = 3;
+    uint32 to_y = 4;
+}
+
+// Sent by both sides every second
+// after authenticating. If either
+// side does not receive this message
+// for ten seconds, they will disconnect
+// with a "timed out" error.
+message KeepAlive {}
+
+// Sent by the server when
+// the client is disconnected
+// for a reason other than an
+// authentication failure.
+// The client should return to
+// the game lobby.
+message Disconnect {
+    string reason = 1;
+}

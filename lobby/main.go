@@ -6,7 +6,6 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 )

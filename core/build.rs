@@ -9,5 +9,5 @@ fn main() {
             ..Default::default()
         },
     })
-    .expect("protc not installed");
+    .expect("protoc not installed");
 }

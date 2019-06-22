@@ -1,5 +1,29 @@
 syntax = "proto3";
 
+message Serverbound {
+    oneof msg {
+        Handshake handshake = 1;
+        Authenticate auth = 2;
+        CreateGame crate_game = 3;
+        JoinGame join_game = 4;
+        MakeMove make_move = 5;
+        KeepAlive keep_alive = 6;
+    }
+}
+
+message Clientbound {
+    oneof msg {
+        Handshake handshake = 1;
+        AuthenticationResult auth_result = 2;
+        PlayerJoined player_joined = 3;
+        StartGame start_game = 4;
+        CurrentTurn current_turn = 5;
+        OpponentMove opponent_move = 6;
+        Disconnect disconnect = 7;
+        KeepAlive keep_alive = 8;
+    }
+}
+
 // Sent by both sides to derive
 // a secret key for symmetric
 // encryption.

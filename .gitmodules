@@ -1,0 +1,6 @@
+[submodule "client/nuklear"]
+	path = client/nuklear
+	url = https://github.com/vurtun/nuklear
+[submodule "client/cstructure"]
+	path = client/cstructure
+	url = https://github.com/caelunshun/cstructure

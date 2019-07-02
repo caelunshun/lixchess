@@ -10,5 +10,15 @@ target_include_directories(lixchess PUBLIC include)
 
 target_include_directories(lixchess PUBLIC ../core/include)
 
+target_include_directories(lixchess PUBLIC nuklear/src)
+
 target_link_directories(lixchess PUBLIC ../core/target/release)
 target_link_libraries(lixchess chess)
+
+find_package(cstructure)
+
+if (NOT cstructure_FOUND)
+    add_subdirectory(cstructure)
+endif()
+
+target_link_libraries(lixchess cstructure_shared)

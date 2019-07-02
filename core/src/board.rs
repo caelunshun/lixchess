@@ -1,4 +1,5 @@
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+#[repr(C)]
 pub enum PieceType {
     Pawn,
     Bishop,
@@ -9,6 +10,7 @@ pub enum PieceType {
 }
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash, new)]
+#[repr(C)]
 pub struct Piece {
     ty: PieceType,
     color: Color,
@@ -25,6 +27,7 @@ impl Piece {
 }
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+#[repr(C)]
 pub enum Color {
     Black,
     White,
@@ -42,6 +45,7 @@ impl Color {
 pub type Pieces = [[Option<Piece>; 8]; 8];
 
 #[derive(Debug, Clone)]
+#[repr(C)]
 pub struct Chessboard {
     pieces: Pieces,
 }
@@ -286,6 +290,7 @@ pub struct Move {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[repr(C)]
 pub struct Position(isize, isize);
 
 impl Position {
@@ -311,6 +316,68 @@ impl Position {
 
     pub fn offset(&self, offset: (isize, isize)) -> Self {
         Position(self.0 + offset.0, self.1 + offset.1)
+    }
+}
+
+// Native bindings
+#[no_mangle]
+pub extern fn board_new() -> Chessboard {
+    Chessboard::new()
+}
+
+#[no_mangle]
+pub extern fn board_set_piece_at(board: *mut Chessboard, pos: Position, piece: Piece) {
+    unsafe {
+        board.as_mut().unwrap().set_piece_at(pos, piece);
+    }
+}
+
+#[no_mangle]
+pub extern fn board_destroy_piece_at(board: *mut Chessboard, pos: Position) {
+    unsafe {
+        board.as_mut().unwrap().destroy_piece_at(pos);
+    }
+}
+
+#[no_mangle]
+pub extern fn board_get_piece_at(board: *const Chessboard, pos: Position) -> *const Piece {
+    unsafe {
+        if let Some(piece) = board.as_ref().unwrap().piece_at(pos) {
+            let boxed = Box::new(piece);
+            let ptr = Box::into_raw(boxed);
+            ptr
+        } else {
+            return std::ptr::null()
+        }
+    }
+}
+
+#[repr(C)]
+pub struct PossibleMoves {
+    ptr: *const Move,
+    len: libc::size_t,
+}
+
+#[no_mangle]
+pub unsafe extern fn board_get_possible_moves(board: *const Chessboard, pos: Position) -> PossibleMoves {
+    let vec = board.as_ref().unwrap().possible_moves(pos);
+
+    let mut vec_res = Vec::with_capacity(vec.len());
+    for m in vec {
+        vec_res.push(m);
+    }
+
+    vec_res.shrink_to_fit();
+    assert_eq!(vec_res.len(), vec_res.capacity());
+
+    let ptr = vec_res.as_ptr();
+    let len = vec_res.len();
+
+    std::mem::forget(vec_res);
+
+    PossibleMoves {
+        ptr,
+        len,
     }
 }
 

@@ -2,3 +2,5 @@
 **/*.rs.bk
 **/.idea
 core/src/proto/main.rs
+client/build
+client/cmake-build-debug

@@ -19,13 +19,7 @@ typedef enum {
 
 typedef struct Move Move;
 
-typedef struct Option_Piece Option_Piece;
-
-typedef Option_Piece Pieces[8][8];
-
-typedef struct {
-  Pieces pieces;
-} Chessboard;
+typedef struct Chessboard Chessboard;
 
 typedef struct {
   intptr_t _0;

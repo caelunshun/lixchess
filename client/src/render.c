@@ -1,5 +1,4 @@
 #include <render.h>
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <main.h>
@@ -38,13 +37,7 @@ void render_init(State *state, int *error) {
 }
 
 void render_chessboard(State *state, int *error) {
-    if (glfwWindowShouldClose(state->window)) {
-        state->running = false;
-        return;
-    }
 
-    glfwSwapBuffers(state->window);
-    glfwPollEvents();
 }
 
 void render_close() {

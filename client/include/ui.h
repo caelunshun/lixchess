@@ -1,6 +1,8 @@
 #ifndef LIXCHESS_CLIENT_UI_H
 #define LIXCHESS_CLIENT_UI_H
 
+#include "main.h"
+
 #define ERR_UI_SHADER_FAILURE 1
 
 typedef struct UiState UiState;
@@ -9,6 +11,8 @@ typedef struct UiState UiState;
  * is initialized
  * */
 UiState *ui_init(int *err);
+
+void render_ui(State *state, UiState *ustate, int *err);
 
 typedef enum UiStage {
     LOGIN_PAGE,

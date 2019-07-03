@@ -54,23 +54,3 @@ void shader_create(const char *vert, const char *frag, Shader *shader, int *err)
 
     shader->program_id = program_id;
 }
-
-void shader_use(Shader *shader) {
-    glUseProgram(shader->program_id);
-}
-
-void shader_set_int(Shader *shader, const char *name, int val) {
-    glUniform1i(glGetUniformLocation(shader->program_id, name), val);
-}
-
-void shader_set_float(Shader *shader, const char *name, float val) {
-    glUniform1f(glGetUniformLocation(shader->program_id, name), val);
-}
-
-void shader_set_vec3(Shader *shader, const char *name, vec3 val) {
-    glUniform3f(glGetUniformLocation(shader->program_id, name), val[0], val[1], val[2]);
-}
-
-void shader_set_vec4(Shader *shader, const char *name, vec4 val) {
-    glUniform4f(glGetUniformLocation(shader->program_id, name), val[0], val[1], val[2], val[3]);
-}

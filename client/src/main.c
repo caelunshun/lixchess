@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <render.h>
 #include <ui.h>
-#include <GLFW/glfw3.h>
 
 int main_loop(State *state, UiState *ustate);
 
@@ -12,7 +11,7 @@ void handle_render_err(int errno) {
             printf("Failed to load GLAD");
             break;
         default:
-            printf("Unknown error occurred while initialising OpenGL: %d", errno);
+            printf("Unknown error occurred while initialising OpenGL: %d\n", errno);
             break;
     }
 }
@@ -20,7 +19,7 @@ void handle_render_err(int errno) {
 void handle_ui_err(int errno) {
     switch (errno) {
         default:
-            printf("Unknown error occurred with UI rendering");
+            printf("Unknown error occurred with UI rendering\n");
             break;
     }
 }
@@ -47,7 +46,9 @@ int main() {
         return 1;
     }
 
-    int res = main_loop(&state);
+    glClearColor(0.1, 0.1, 0.15, 1.0);
+
+    int res = main_loop(&state, ustate);
     render_close();
 
     return res;
@@ -56,6 +57,7 @@ int main() {
 int main_loop(State *state, UiState *ustate) {
     printf("Running main loop.\n");
     while (state->running) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (state->in_game) {
             int err = 0;
             render_chessboard(state, &err);
@@ -64,6 +66,20 @@ int main_loop(State *state, UiState *ustate) {
                 handle_render_err(err);
                 return 1;
             }
+        }
+        int err = 0;
+        render_ui(state, ustate, &err);
+
+        if (err != 0) {
+            printf("Error rendering UI");
+            return 1;
+        }
+
+        glfwSwapBuffers(state->window);
+        glfwPollEvents();
+
+        if (glfwWindowShouldClose(state->window)) {
+            state->running = false;
         }
     }
 

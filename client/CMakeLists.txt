@@ -10,7 +10,7 @@ target_include_directories(lixchess PUBLIC include)
 
 target_include_directories(lixchess PUBLIC ../core/include)
 
-target_include_directories(lixchess PUBLIC nuklear/src glad/include)
+target_include_directories(lixchess PUBLIC nuklear glad/include)
 
 target_link_directories(lixchess PUBLIC ../core/target/release)
 target_link_libraries(lixchess chess)

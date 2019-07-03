@@ -1,12 +1,13 @@
 #include <main.h>
 #include <stdio.h>
 #include <render.h>
+#include <ui.h>
 
-void main_loop(State *state);
+int main_loop(State *state, RenderState *rstate);
 
 void handle_render_err(int errno) {
     switch (errno) {
-        case RENDER_GLAD_INIT_FAILED:
+        case ERR_RENDER_GLAD_INIT:
             printf("Failed to load GLAD");
             break;
         default:
@@ -27,15 +28,25 @@ int main() {
     }
 
     State state;
-    state.rstate = rstate;
-    state.running = 1;
+    state.running = true;
+    state.in_game = false;
 
-    main_loop(&state);
+    return main_loop(&state, &rstate);
 }
 
-void main_loop(State *state) {
+int main_loop(State *state, RenderState *rstate) {
     while (state->running) {
-        r
-    }
-}
+        if (state->in_game) {
+            int err = 0;
+            render_chessboard(state, rstate, &err);
 
+            if (err != 0) {
+                handle_render_err(err);
+                return 1;
+            }
+        }
+    }
+
+    printf("Shutting down. Goodbye!\n");
+    return 0;
+}

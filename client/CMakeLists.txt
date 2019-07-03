@@ -3,7 +3,7 @@ project(lixchess_client C)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCES src/main.c src/render.c glad/src/glad.c)
+set(SOURCES src/main.c src/render.c src/ui.c src/util.c glad/src/glad.c)
 add_executable(lixchess ${SOURCES})
 
 target_include_directories(lixchess PUBLIC include)

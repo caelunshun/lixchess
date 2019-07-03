@@ -1,12 +1,13 @@
 #ifndef LIXCHESS_CLIENT_MAIN_H
 #define LIXCHESS_CLIENT_MAIN_H
-#include <render.h>
+
+#include <stdbool.h>
 
 typedef struct State State;
 
 struct State {
-    RenderState *rstate;
-    int running;
+    bool running;
+    bool in_game;
 };
 
 

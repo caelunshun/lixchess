@@ -5,10 +5,10 @@
 
 typedef struct RenderState RenderState;
 
-#define RENDER_GLAD_INIT_FAILED 1
+#define ERR_RENDER_GLAD_INIT 1
 
 RenderState *render_init(int *error);
 
-void render_frame(State *state, )
+void render_chessboard(State *state, RenderState *rstate, int *error);
 
 #endif //LIXCHESS_CLIENT_RENDER_H

@@ -31,7 +31,7 @@ RenderState *render_init(int *error) {
     glfwMakeContextCurrent(state->window);
 
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        *error = RENDER_GLAD_INIT_FAILED;
+        *error = ERR_RENDER_GLAD_INIT;
         return NULL;
     }
 
@@ -42,8 +42,7 @@ RenderState *render_init(int *error) {
     return state;
 }
 
-void render_frame(State *state, int *error) {
-    RenderState *rstate = state->rstate;
+void render_chessboard(State *state, RenderState *rstate, int *error) {
     if (glfwWindowShouldClose(rstate->window)) {
         rstate->should_close = 1;
         return;

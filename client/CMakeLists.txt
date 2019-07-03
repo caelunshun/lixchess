@@ -3,7 +3,7 @@ project(lixchess_client C)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCES src/main.c src/render.c src/ui.c src/util.c glad/src/glad.c)
+set(SOURCES src/main.c src/render.c src/ui.c src/util.c src/shader.c glad/src/glad.c)
 add_executable(lixchess ${SOURCES})
 
 target_include_directories(lixchess PUBLIC include)
@@ -21,5 +21,7 @@ if (NOT cstructure_FOUND)
     add_subdirectory(cstructure)
 endif()
 
+find_package(glfw3 REQUIRED)
+
 target_link_libraries(lixchess cstructure_shared)
-target_link_libraries(lixchess glfw3 GL X11 pthread Xrandr Xi dl)
+target_link_libraries(lixchess glfw GL X11 pthread Xrandr Xi dl)

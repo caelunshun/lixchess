@@ -11,6 +11,6 @@ typedef struct {
     char *buf;
 } FileBuf;
 
-FileBuf read_file(char *path, size_t path_len, int *err);
+FileBuf read_file(const char *path, int *err);
 
 #endif //LIXCHESS_CLIENT_UTIL_H

@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <render.h>
 #include <ui.h>
+#include <GLFW/glfw3.h>
 
-int main_loop(State *state, RenderState *rstate);
+int main_loop(State *state, UiState *ustate);
 
 void handle_render_err(int errno) {
     switch (errno) {
@@ -16,29 +17,48 @@ void handle_render_err(int errno) {
     }
 }
 
+void handle_ui_err(int errno) {
+    switch (errno) {
+        default:
+            printf("Unknown error occurred with UI rendering");
+            break;
+    }
+}
+
 int main() {
     printf("Initializing. Please wait...\n");
 
-    int rerr = 0;
-    RenderState *rstate= render_init(&rerr);
+    State state;
+    state.running = true;
+    state.in_game = true; // TODO set to false
 
-    if (rerr != 0) {
-        handle_render_err(rerr);
+    int err = 0;
+    render_init(&state, &err);
+
+    if (err != 0) {
+        handle_render_err(err);
         return 1;
     }
 
-    State state;
-    state.running = true;
-    state.in_game = false;
+    UiState *ustate = ui_init(&err);
 
-    return main_loop(&state, &rstate);
+    if (err != 0) {
+        handle_ui_err(err);
+        return 1;
+    }
+
+    int res = main_loop(&state);
+    render_close();
+
+    return res;
 }
 
-int main_loop(State *state, RenderState *rstate) {
+int main_loop(State *state, UiState *ustate) {
+    printf("Running main loop.\n");
     while (state->running) {
         if (state->in_game) {
             int err = 0;
-            render_chessboard(state, rstate, &err);
+            render_chessboard(state, &err);
 
             if (err != 0) {
                 handle_render_err(err);
@@ -47,6 +67,6 @@ int main_loop(State *state, RenderState *rstate) {
         }
     }
 
-    printf("Shutting down. Goodbye!\n");
+    printf("Shutting down. Goodbye.\n");
     return 0;
 }

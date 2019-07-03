@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-FileBuf read_file(char *path, size_t path_len, int *err) {
+FileBuf read_file(const char *path, int *err) {
     char *buf = NULL;
     FileBuf res;
 
